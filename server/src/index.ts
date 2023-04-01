@@ -1,5 +1,5 @@
 require("dotenv").config();
-import { Users, Messages } from './models/models';
+import { ChatUsers, Messages } from './models/models';
 import express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
@@ -63,7 +63,7 @@ const start = async () => {
   try {
     await sequelize.authenticate();
     console.log('Connection to database has been established successfully.');
-    await Users.sync(process.env.NODE_ENV === 'development' ? { alter: true } : undefined);
+    await ChatUsers.sync(process.env.NODE_ENV === 'development' ? { alter: true } : undefined);
     await Messages.sync(process.env.NODE_ENV === 'development' ? { alter: true } : undefined);
     console.log("All models were synchronized successfully.");
     httpServer.listen(PORT, () => {

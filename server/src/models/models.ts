@@ -3,7 +3,7 @@ import { sequelize } from '../db';
 import { IMessage, IUser } from '../types/databaseTypes';
 
 export type UserCreationAttributes = Optional<IUser, 'id' | 'createdAt' | 'updatedAt'>;
-export const Users: ModelDefined<IUser, UserCreationAttributes> = sequelize.define('ChatUsers', {
+export const ChatUsers: ModelDefined<IUser, UserCreationAttributes> = sequelize.define('ChatUsers', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -34,7 +34,7 @@ export const Messages: ModelDefined<IMessage, MessageCreationAttributes> = seque
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: 'ChatUsers',
       key: 'id'
     }
   },
@@ -43,7 +43,7 @@ export const Messages: ModelDefined<IMessage, MessageCreationAttributes> = seque
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: 'Users',
+      model: 'ChatUsers',
       key: 'id'
     }
   },
@@ -58,7 +58,7 @@ export const Messages: ModelDefined<IMessage, MessageCreationAttributes> = seque
     allowNull: false
   },
 });
-Users.hasMany(Messages, { foreignKey: 'recipientId', as: 'receivedMessages' });
-Users.hasMany(Messages, { foreignKey: 'senderId', as: 'sentMessages' });
-Messages.belongsTo(Users, { as: 'recipient', foreignKey: 'recipientId' });
-Messages.belongsTo(Users, { as: 'sender', foreignKey: 'senderId' });
+ChatUsers.hasMany(Messages, { foreignKey: 'recipientId', as: 'receivedMessages' });
+ChatUsers.hasMany(Messages, { foreignKey: 'senderId', as: 'sentMessages' });
+Messages.belongsTo(ChatUsers, { as: 'recipient', foreignKey: 'recipientId' });
+Messages.belongsTo(ChatUsers, { as: 'sender', foreignKey: 'senderId' });

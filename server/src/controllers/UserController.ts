@@ -1,5 +1,5 @@
 import { Socket } from "socket.io";
-import { Messages, Users } from "../models/models";
+import { Messages, ChatUsers } from "../models/models";
 
 interface receivedMessage {
     title: string,
@@ -24,7 +24,7 @@ export class UserController {
     }
 
     static async #getAllUsers() {
-        const users = await Users.findAll()
+        const users = await ChatUsers.findAll()
             .then(responseObject => responseObject.map(u => u.get({ plain: true })))
         return users.map(u => u.name)
     }
@@ -32,7 +32,7 @@ export class UserController {
     static async #getUserMessages(name: string) {
         const user = await UserController.#getUserWithMessages(name)
         if (user === null) {
-            await Users.create({ name })
+            await ChatUsers.create({ name })
             return undefined
         } else {
             return user.get({ plain: true }) as unknown as IUserWithMessages
@@ -40,13 +40,13 @@ export class UserController {
     }
 
     static async #getUserWithMessages(name: string) {
-        return await Users.findOne({
+        return await ChatUsers.findOne({
             attributes: ['name'],
             include: [{
                 model: Messages,
                 as: 'receivedMessages',
                 attributes: ['title', 'messageBody', 'createdAt'],
-                include: [{ model: Users, as: 'sender', attributes: ['name'] }],
+                include: [{ model: ChatUsers, as: 'sender', attributes: ['name'] }],
             }],
             where: { name }
         })

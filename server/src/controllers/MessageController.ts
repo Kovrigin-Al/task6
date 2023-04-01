@@ -1,4 +1,4 @@
-import { Messages, Users } from "../models/models";
+import { ChatUsers, Messages } from "../models/models";
 import { IReceivedMessage } from "../types/databaseTypes";
 
 export class MessageController {
@@ -10,11 +10,12 @@ export class MessageController {
     }
 
     static async #findUserIdByName(name: string) {
-        const user = await Users.findOne({ where: { name } });
+        const user = await ChatUsers.findOne({ where: { name } });
         if (user === null) {
-            throw new Error('Incorrect user name provided');
+            return (await ChatUsers.create({name})).getDataValue('id')
+        } else {
+            return user.getDataValue('id');
         }
-        return user.getDataValue('id');
     }
 
     static async #createMessage(messageBody: string, title: string, senderId: number, recipientId: number) {

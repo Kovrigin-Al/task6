@@ -9,7 +9,7 @@ type Props = {
     handleModalClose: () => void;
 };
 export interface IFormValues {
-    receiptor: string;
+    recipient: string;
     title: string;
     message: string;
 }
@@ -23,7 +23,7 @@ const NewMessageForm: FC<Props> = ({ handleModalClose }) => {
     } = useForm<IFormValues>({
         defaultValues: {
             message: "",
-            receiptor: "",
+            recipient: "",
             title: "",
         },
     });
@@ -32,7 +32,7 @@ const NewMessageForm: FC<Props> = ({ handleModalClose }) => {
         socket.emit("sendMessage", 
         {
             content: { message: data.message, title: data.title },
-            to: data.receiptor,
+            to: data.recipient,
         }
         );
         handleModalClose();
@@ -47,7 +47,13 @@ const NewMessageForm: FC<Props> = ({ handleModalClose }) => {
                 className="max-w-lg mx-auto my-5"
                 onSubmit={handleSubmit(handleFormSubmit)}
             >
-                <ComboBox control={control} />
+                <DataInput
+                    label="recipient"
+                    register={register}
+                    errors={errors}
+                    required={true}
+                    multiline={false}
+                />
                 <DataInput
                     label="title"
                     register={register}

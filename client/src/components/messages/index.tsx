@@ -7,7 +7,6 @@ type Props = {
 };
 const Messages: FC<Props> = ( ) => {
     const {messages} = useContext(Context)
-    console.log('messages', messages)
     return (
         <div className="w-full h-screen overflow-y-scroll  sm:px-4 pt-16">
             {messages.length !== 0 && (

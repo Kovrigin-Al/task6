@@ -23,7 +23,7 @@ const ComboBox: FC<Props> = ({ control }) => {
               );
     return (
         <Controller
-            name="receiptor"
+            name="recipient"
             control={control}
             render={({ field }) => (
                 <Combobox value={field.value} onChange={field.onChange} >
